@@ -1,6 +1,7 @@
 let minutes = 25;
 let seconds = 0;
 let timerId;
+let isRunning = false;
 // a function that displays the timer
 function displayTimer (){
 // (seconds < 10 ? '0' : '') + seconds => if the second goes down 10 like 7 this is gone add 0 infront resulting 07   
@@ -23,9 +24,13 @@ function decreaseTime(){
         console.log(seconds);
     }
 }
+const startPomodoro = document.getElementById('start');
+startPomodoro = document.addEventListener('click', start);
 
 function start(){
 // This disables the Start button after it's clicked and keeps it disabled until the timer finishes.
+if (!isRunning) {
+    isRunning = true;
     document.querySelector("#start").disabled = true;
     timerId = setInterval(( ) =>{
         decreaseTime();
@@ -36,5 +41,9 @@ function start(){
         }
     }, 1000);
 } 
+}
 
-
+const pausePomodoro = document.getElementById('pause');
+pausePomodoro.addEventListener('click', () => { 
+    clearInterval(timerId);
+});
