@@ -3,6 +3,7 @@ let seconds = 0;
 let timerId;
 let isRunning = false;
 
+
 /*******************************TIMER DISPLAY*******************************/
 function displayTimer (){
 // (seconds < 10 ? '0' : '') + seconds => if the second goes down 10 like 7 this is gone add 0 infront resulting 07   
@@ -26,6 +27,7 @@ function decreaseTime(){
         console.log(seconds);
     }
 }
+
 /*******************************START*******************************/
 const startPomodoro = document.getElementById('start');
 startPomodoro.addEventListener('click', start);
