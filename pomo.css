@@ -4,6 +4,7 @@
     box-sizing: border-box;
 }
 body {
+    background-image: url("./images/scifi.png");
     margin: 20px;
     padding: 10px;
     min-height: 100vh;
@@ -32,7 +33,7 @@ h1 {
 .main-timer {
     margin: 30px;
     padding: 10px;
-    background-color: rgba(255, 255, 255, 0.418);
+    background-color: rgba(255, 255, 255, 0.329);
     padding: 30px;
     border-radius: 30px;
     box-shadow: 0 8px 16px black; /* shadow */
@@ -41,8 +42,8 @@ h1 {
     font-weight: bold;
 }
 .main-timer:hover {
-    transform: translateY(-3px);
     box-shadow: 0 12px 24px black;
+    background-color: rgba(255, 255, 255, 0.445);
 }
 .controls button {
     margin: 10px 0;
@@ -66,8 +67,8 @@ transform: translateY(-2px);
 footer {
     text-align: center;
     padding: 5px;
-    background-color: #b8bdc01c;
-    color: rgba(0, 0, 0, 0.678);
+    background-color: #b8bdc048;
+    color: rgba(0, 0, 0, 0.726);
     font-size: 0.7rem;
 }
 footer a{
