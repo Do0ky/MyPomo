@@ -93,3 +93,31 @@ shortPomodoroBreak.addEventListener('click', () => {
             }
         }, 1000);
 });
+
+/***************************15-MINUTES BREAK***************************/
+//Note: this way our break can only be activated IF the session is/has been running
+//Later we may consider making reset work when the break is on, to reset to 15 : 00
+const longPomodoroBreak = document.getElementById('long-break');
+longPomodoroBreak.addEventListener('click', () => {
+    document.querySelector("#long-break").disabled = true; //disables the short break button
+    
+    if (isRunning) {
+        clearInterval(timerId); //stops the timer loop if it's running
+    }
+    //once it's cleared the following happens:
+    isRunning = true; //security check
+    minutes = 15; //update the value of the variable 
+    seconds = 0;
+    displayTimer(); //shows directly 05:00
+
+    timerId = setInterval( () => {
+            decreaseTime();
+            displayTimer();
+            if (minutes === 0 && seconds === 0) {
+                clearInterval(timerId);
+                isRunning = false; //this is optional, just security
+                document.querySelector("#short-break").disabled = false; //re-enable the break button
+                document.querySelector("#start").disabled = false; //re-enable the start button
+            }
+        }, 1000);
+});
