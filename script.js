@@ -28,42 +28,51 @@ function decreaseTime(){
     }
 }
 
-/*******************************START*******************************/
+/*******************************Toggle between START and PAUSE on the same button*******************************/
 const startPomodoro = document.getElementById('start');
-startPomodoro.addEventListener('click', start);
-
-function start(){
-    if (!isRunning) {
-        isRunning = true;
-        document.querySelector("#start").disabled = true; // Disables the Start button after it's clicked and keeps it disabled until the timer finishes
-        timerId = setInterval( () => {
-            decreaseTime();
-            displayTimer();
-            if (minutes === 0 && seconds === 0) {
-                clearInterval(timerId);
-                document.querySelector("#start").disabled = false;
-            }
-        }, 1000);
+startPomodoro.addEventListener('click', () => {
+    if(!isRunning){
+         isRunning = true;
+         startPomodoro.textContent= 'Pause';
+         console.log(`before start`);
+         startTimer();         
+    }else {
+        isRunning = false;
+        startPomodoro.textContent= 'Start';
+        pauseTimer();
     }
+});
+
+/*******************************START*******************************/
+function startTimer(){
+// Start the timer and run this function every 1000 milliseconds (1 second) 
+    timerId = setInterval( () => {
+        decreaseTime();   // Decrease the timer by 1 second
+        displayTimer();   // Update the timer display on the screen
+        // If the timer reaches 0 minutes and 0 seconds, stop the timer
+        if (minutes === 0 && seconds === 0) {
+            clearInterval(timerId); // Stop the interval loop (timer)
+            isRunning =false; // Update status to show timer is no longer running
+            startPomodoro.textContent = 'Start';// Change button text back to "Start"
+        }
+    }, 1000); // This function runs once per second    
 }
 
 /*******************************PAUSE*******************************/
-const pausePomodoro = document.getElementById('pause');
-pausePomodoro.addEventListener('click', () => { 
-    clearInterval(timerId);
-});
+// Function to pause the timer
+function pauseTimer(){  
+        clearInterval(timerId); // Stop the interval loop (pause the timer)      
+    }
 
 /*******************************RESET*******************************/
 const resetPomodoro = document.getElementById('reset');
-resetPomodoro.addEventListener('click', () => {
-    if (isRunning) {
+resetPomodoro.addEventListener('click', () => {    
+        startPomodoro.textContent = 'Start';// Change button text back to "Start"
         clearInterval(timerId); //stops the timer loop
         isRunning = false; //this is optional, just security
         minutes = 25; //resets minutes
         seconds = 0; //resets seconds
-        displayTimer(); //refreshes the display
-        document.querySelector("#start").disabled = false; //re-enable the start button
-    }
+        displayTimer(); //refreshes the display            
 });
 
 /***************************5-MINUTES BREAK***************************/
