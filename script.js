@@ -45,7 +45,8 @@ startPomodoro.addEventListener('click', () => {
 
 /*******************************START*******************************/
 function startTimer(){
-// Start the timer and run this function every 1000 milliseconds (1 second) 
+    clearInterval(timerId); // Always clear first to avoid double intervals
+    // Start the timer and run this function every 1000 milliseconds (1 second) 
     timerId = setInterval( () => {
         decreaseTime();   // Decrease the timer by 1 second
         displayTimer();   // Update the timer display on the screen
@@ -67,40 +68,35 @@ function pauseTimer(){
 /*******************************RESET*******************************/
 const resetPomodoro = document.getElementById('reset');
 resetPomodoro.addEventListener('click', () => {    
-        startPomodoro.textContent = 'Start';// Change button text back to "Start"
+        startPomodoro.textContent = 'Start';// Change button text back to "Start"        
         clearInterval(timerId); //stops the timer loop
         isRunning = false; //this is optional, just security
         minutes = 25; //resets minutes
         seconds = 0; //resets seconds
-        displayTimer(); //refreshes the display            
+        displayTimer(); //refreshes the display  
+        // Re-enable break buttons after reset
+        shortPomodoroBreak.disabled = false;
+        longPomodoroBreak.disabled = false;         
 });
 
+function startBreak(breakMinutes, breakButton){
+    breakButton.disabled = true; //disables the short break button
+    
+    if (isRunning) clearInterval(timerId); //stops the timer loop if it's running
+    //once it's cleared the following happens:
+    isRunning = true; //security check
+    minutes = breakMinutes; //update the value of the variable 
+    seconds = 0;
+    displayTimer(); //shows breakMinutes set timer
+    startPomodoro.textContent = 'Pause';
+    startTimer();
+}
 /***************************5-MINUTES BREAK***************************/
 //Note: this way our break can only be activated IF the session is/has been running
 //Later we may consider making reset work when the break is on, to reset to 05 : 00
 const shortPomodoroBreak = document.getElementById('short-break');
 shortPomodoroBreak.addEventListener('click', () => {
-    document.querySelector("#short-break").disabled = true; //disables the short break button
-    
-    if (isRunning) {
-        clearInterval(timerId); //stops the timer loop if it's running
-    }
-    //once it's cleared the following happens:
-    isRunning = true; //security check
-    minutes = 5; //update the value of the variable 
-    seconds = 0;
-    displayTimer(); //shows directly 05:00
-
-    timerId = setInterval( () => {
-            decreaseTime();
-            displayTimer();
-            if (minutes === 0 && seconds === 0) {
-                clearInterval(timerId);
-                isRunning = false; //this is optional, just security
-                document.querySelector("#short-break").disabled = false; //re-enable the break button
-                document.querySelector("#start").disabled = false; //re-enable the start button
-            }
-        }, 1000);
+    startBreak(5, shortPomodoroBreak); // 5 minutes for short break    
 });
 
 /***************************15-MINUTES BREAK***************************/
@@ -108,25 +104,5 @@ shortPomodoroBreak.addEventListener('click', () => {
 //Later we may consider making reset work when the break is on, to reset to 15 : 00
 const longPomodoroBreak = document.getElementById('long-break');
 longPomodoroBreak.addEventListener('click', () => {
-    document.querySelector("#long-break").disabled = true; //disables the short break button
-    
-    if (isRunning) {
-        clearInterval(timerId); //stops the timer loop if it's running
-    }
-    //once it's cleared the following happens:
-    isRunning = true; //security check
-    minutes = 15; //update the value of the variable 
-    seconds = 0;
-    displayTimer(); //shows directly 05:00
-
-    timerId = setInterval( () => {
-            decreaseTime();
-            displayTimer();
-            if (minutes === 0 && seconds === 0) {
-                clearInterval(timerId);
-                isRunning = false; //this is optional, just security
-                document.querySelector("#short-break").disabled = false; //re-enable the break button
-                document.querySelector("#start").disabled = false; //re-enable the start button
-            }
-        }, 1000);
+    startBreak(15, longPomodoroBreak); // 15 minutes for long break  
 });
