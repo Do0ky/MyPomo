@@ -3,7 +3,6 @@ let seconds = 0;
 let timerId;
 let isRunning = false;
 
-
 /*******************************TIMER DISPLAY*******************************/
 function displayTimer (){
     // (seconds < 10 ? '0' : '') + seconds => if the second goes down 10 like 7 this is gone add 0 infront resulting 07
@@ -28,7 +27,7 @@ function decreaseTime(){
     }
 }
 
-/*******************************Toggle between START and PAUSE on the same button*******************************/
+/***************************Toggle between START and PAUSE on the same button***************************/
 const startPomodoro = document.getElementById('start');
 startPomodoro.addEventListener('click', () => {
     if(!isRunning){
@@ -66,6 +65,7 @@ function pauseTimer(){
     }
 
 /*******************************RESET*******************************/
+//Claire: I actually think it's fine to always reset back to 25 (and not 5 or 15 during breaks)? Like it makes more sense?
 const resetPomodoro = document.getElementById('reset');
 resetPomodoro.addEventListener('click', () => {    
         startPomodoro.textContent = 'Start';// Change button text back to "Start"        
@@ -79,29 +79,25 @@ resetPomodoro.addEventListener('click', () => {
         longPomodoroBreak.disabled = false;         
 });
 
+/*******************************BREAKS*******************************/
 function startBreak(breakMinutes, breakButton){
     breakButton.disabled = true; //disables the short break button
-    
-    if (isRunning) clearInterval(timerId); //stops the timer loop if it's running
+    clearInterval(timerId); //stops the timer loop if it's running
     //once it's cleared the following happens:
-    isRunning = true; //security check
+    isRunning = false; //avoids auto-start
     minutes = breakMinutes; //update the value of the variable 
     seconds = 0;
     displayTimer(); //shows breakMinutes set timer
-    startPomodoro.textContent = 'Pause';
-    startTimer();
+
+    startPomodoro.textContent = 'Start'; //shows start until clicked
 }
 /***************************5-MINUTES BREAK***************************/
-//Note: this way our break can only be activated IF the session is/has been running
-//Later we may consider making reset work when the break is on, to reset to 05 : 00
 const shortPomodoroBreak = document.getElementById('short-break');
 shortPomodoroBreak.addEventListener('click', () => {
     startBreak(5, shortPomodoroBreak); // 5 minutes for short break    
 });
 
 /***************************15-MINUTES BREAK***************************/
-//Note: this way our break can only be activated IF the session is/has been running
-//Later we may consider making reset work when the break is on, to reset to 15 : 00
 const longPomodoroBreak = document.getElementById('long-break');
 longPomodoroBreak.addEventListener('click', () => {
     startBreak(15, longPomodoroBreak); // 15 minutes for long break  
