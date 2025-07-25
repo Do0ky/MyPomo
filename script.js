@@ -3,7 +3,7 @@ let seconds = 0;
 let timerId;
 let isRunning = false;
 
-/*******************************TIMER DISPLAY*******************************/
+/******************************TIMER DISPLAY******************************/
 function displayTimer (){
     // (seconds < 10 ? '0' : '') + seconds => if the second goes down 10 like 7 this is gone add 0 infront resulting 07
     document.querySelector("#time").textContent = `${(minutes < 10 ? '0' : '') + minutes} : ${(seconds < 10 ? '0' : '') + seconds}`;
@@ -27,7 +27,7 @@ function decreaseTime(){
     }
 }
 
-/***************************Toggle between START and PAUSE on the same button***************************/
+/************Toggle between START and PAUSE on the same button************/
 const startPomodoro = document.getElementById('start');
 startPomodoro.addEventListener('click', () => {
     if(!isRunning){
@@ -73,7 +73,8 @@ resetPomodoro.addEventListener('click', () => {
         isRunning = false; //this is optional, just security
         minutes = 25; //resets minutes
         seconds = 0; //resets seconds
-        displayTimer(); //refreshes the display  
+        displayTimer(); //refreshes the display
+        updateSessionLabel('Pomodoro'); //call session label function, updating text of label to Pomodoro
         // Re-enable break buttons after reset
         shortPomodoroBreak.disabled = false;
         longPomodoroBreak.disabled = false;         
@@ -87,6 +88,7 @@ function startBreak(breakMinutes, breakButton){
     isRunning = false; //avoids auto-start
     minutes = breakMinutes; //update the value of the variable 
     seconds = 0;
+    updateSessionLabel('Break'); //call session label function, updating text of label to Break
     displayTimer(); //shows breakMinutes set timer
 
     startPomodoro.textContent = 'Start'; //shows start until clicked
@@ -97,8 +99,19 @@ shortPomodoroBreak.addEventListener('click', () => {
     startBreak(5, shortPomodoroBreak); // 5 minutes for short break    
 });
 
-/***************************15-MINUTES BREAK***************************/
+/**************************15-MINUTES BREAK**************************/
 const longPomodoroBreak = document.getElementById('long-break');
 longPomodoroBreak.addEventListener('click', () => {
     startBreak(15, longPomodoroBreak); // 15 minutes for long break  
 });
+
+/***************************LABEL SESSION***************************/
+//Update the text of the label depending on the session
+function updateSessionLabel(mode) {
+    const label = document.getElementById('session-label');
+    label.textContent = mode; //getting the text content of the div => the 'mode' parameter is updated in the reset and break functions
+
+    //toggling the class of the div depending on the session
+    if (mode === 'Break') {label.classList.add('break');} 
+    else {label.classList.remove('break');}
+}
