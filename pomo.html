@@ -38,8 +38,21 @@
 
 
     </main>
-        <!-- Footer Credits -->
     <footer>
+        <!-- Footer background selector -->
+        <button id="toggle-theme" aria-label="Choose ambiance">⚙️</button>
+        <div id="bg-selector" style="display: none;">
+            <label for="bg-theme">Ambiance:</label>
+            <select id="bg-theme">
+            <optgroup label="Dark Mode">
+                <option value="scifi">Sci-Fi</option>
+                <option value="hp-night">Hogwarts at Night</option>
+            </optgroup>
+            <!-- Here add light mode options later -->
+            </select>
+        </div>
+
+        <!-- Footer Credits -->
         <p>
             Created by Claire Peyre, Jennifer Roldan, and Sosina Demelash.
             Inspired by <a href="https://www.francescocirillo.com" target="_blank" rel="noopener noreferrer">Francesco Cirillo</a>.
