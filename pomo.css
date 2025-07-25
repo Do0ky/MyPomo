@@ -30,6 +30,23 @@ h1 {
     text-align: center;
     font-size: 1.7rem;
 }
+#session-label {
+    width: 100%;                    /* fills the width of .app */
+    margin-bottom: 8px;            /* space between label and timer */
+    padding: 10px 15px;
+    background-color: #000000be;
+    color: white;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-align: center;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    transition: background-color 0.3s ease;
+}
+#session-label.break {
+    background-color: #6ed3cf;
+    color: black;
+}
 .main-timer {
     margin: 30px;
     padding: 10px;
