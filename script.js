@@ -1,12 +1,25 @@
-let minutes = 25;
+// Timer variables
+let minutes = 1;
 let seconds = 0;
 let timerId;
 let isRunning = false;
+
+// Session counters
+let workSessions = 0;       // Tracks number of Pomodoro work sessions
+let shortBreaks = 0;        // Tracks short breaks taken
+let longBreaks = 0;         // Tracks long breaks taken
 
 /******************************TIMER DISPLAY******************************/
 function displayTimer (){
     // (seconds < 10 ? '0' : '') + seconds => if the second goes down 10 like 7 this is gone add 0 infront resulting 07
     document.querySelector("#time").textContent = `${(minutes < 10 ? '0' : '') + minutes} : ${(seconds < 10 ? '0' : '') + seconds}`;
+}
+
+/*******************************SESSION DISPLAY*******************************/
+// Updates the on-screen counter showing sessions and breaks taken
+function updateSessionDisplay() {
+    document.getElementById('session-info').textContent =
+    `Sessions: ${workSessions} | Short Breaks: ${shortBreaks} | Long Breaks: ${longBreaks}`;
 }
 
 /*******************************COUNTDOWN*******************************/
@@ -16,7 +29,7 @@ function displayTimer (){
 function decreaseTime(){
     if (seconds === 0) {
         if (minutes === 0) {
-            clearInterval(timerId);
+            clearInterval(timerId);            
             return;
         }
         minutes--;
@@ -54,6 +67,8 @@ function startTimer(){
             clearInterval(timerId); // Stop the interval loop (timer)
             isRunning =false; // Update status to show timer is no longer running
             startPomodoro.textContent = 'Start';// Change button text back to "Start"
+            workSessions++;
+            updateSessionDisplay();
         }
     }, 1000); // This function runs once per second    
 }
@@ -77,7 +92,13 @@ resetPomodoro.addEventListener('click', () => {
         updateSessionLabel('Pomodoro'); //call session label function, updating text of label to Pomodoro
         // Re-enable break buttons after reset
         shortPomodoroBreak.disabled = false;
-        longPomodoroBreak.disabled = false;         
+        longPomodoroBreak.disabled = false;       
+        // Reset session counters
+	        workSessions = 0;
+	        shortBreaks = 0;
+	        longBreaks = 0;
+	        updateSessionDisplay();
+  
 });
 
 /*******************************BREAKS*******************************/
@@ -90,13 +111,17 @@ function startBreak(breakMinutes, breakButton){
     seconds = 0;
     updateSessionLabel('Break'); //call session label function, updating text of label to Break
     displayTimer(); //shows breakMinutes set timer
+    // Count the right type of break
+    if (breakMinutes === 1) shortBreaks++;
+    else if (breakMinutes === 15) longBreaks++;
+    updateSessionDisplay();
 
     startPomodoro.textContent = 'Start'; //shows start until clicked
 }
 /***************************5-MINUTES BREAK***************************/
 const shortPomodoroBreak = document.getElementById('short-break');
 shortPomodoroBreak.addEventListener('click', () => {
-    startBreak(5, shortPomodoroBreak); // 5 minutes for short break    
+    startBreak(1, shortPomodoroBreak); // 5 minutes for short break    
 });
 
 /**************************15-MINUTES BREAK**************************/
