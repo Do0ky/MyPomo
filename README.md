@@ -24,7 +24,7 @@ Inspired by the Pomodoro technique developed by [Francesco Cirillo](https://www.
 
 ## 💡 Potential future enhancements
 - 🔔 Sound alerts at session transitions
-- 🕹️ Refined break activation logic — breaks will wait for the user to press “Start” instead of auto-launching when selected
-- 📈 Stats tracker for daily Pomodoros
+- 🖼️ Background toggle
+- 📈 Stats tracker for daily Pomodoros (based on the session counter)
 - 🧘‍♀️ Animated break transitions
 - 📱 Enhanced responsive layout for improved usability across all screen sizes and devices
