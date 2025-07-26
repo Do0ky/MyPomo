@@ -118,7 +118,6 @@ h1 {
     backdrop-filter: blur(6px);
     box-shadow: 0 0 10px rgba(200, 150, 255, 0.2);
 }
-
 #session-info {
     margin: 0;
 }
@@ -126,15 +125,44 @@ h1 {
 /* Footer */
 footer {
   text-align: center;
-  color: #ccc;
-  font-size: 0.9rem;
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 20px 10px;
+  height: 100px;
+  position: relative;
 }
-
+#toggle-theme {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  opacity: 0.6;
+}
+footer p {
+  margin-top: auto;
+  margin-bottom: 0;
+  color: #cccccc91;
+  font-size: 0.5rem;
+}
 footer a {
   color: #c084fc;
   text-decoration: none;
 }
 footer a:hover {
   text-decoration: underline;
+}
+/*background selector when you click on the button*/
+#bg-selector {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+#bg-selector.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+#bg-selector.hide {
+  opacity: 0;
+  transform: translateY(10px);
 }
