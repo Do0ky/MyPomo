@@ -140,3 +140,9 @@ function updateSessionLabel(mode) {
     if (mode === 'Break') {label.classList.add('break');} 
     else {label.classList.remove('break');}
 }
+
+/************************DROPDOWN TOGGLE THEME************************/
+document.getElementById("toggle-theme").addEventListener("click", () => {
+    const dropdown = document.getElementById("bg-selector"); //fetching background selector div
+    dropdown.style.display = (dropdown.style.display === "none") ? "block" : "none"; //ternary operator => if not visible, then display in block
+});
