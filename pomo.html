@@ -39,18 +39,24 @@
 
     </main>
     <footer>
-        <!-- Footer background selector -->
+        <!-- Settings button -->
         <button id="toggle-theme" aria-label="Choose ambiance">⚙️</button>
-        <div id="bg-selector" style="display: none;">
+ 
+        <div id="bg-selector" style="display: none;"> <!--Maybe we should modify the ID to settings or something similar-->
+            <!-- Background selector -->
             <label for="bg-theme">Customize Your Pomo</label>
             <select id="bg-theme">
             <optgroup label="Dark Mode">
                 <option value="scifi">Sci-Fi</option>
                 <option value="hp-night">Magical</option>
             </optgroup>
-            <!-- Here add light mode options later -->
+            <optgroup label="Light Mode">
+                <option value="lotr-light">Fantasy</option>
+                <option value="hg-light">Dystopia</option>
+            </optgroup>
             </select>
-
+            
+            <!-- Alarm sound selector -->
              <label for="alarm-sound" style="margin-top: 10px; display: block;">Alarm Sound:</label>
                 <select id="alarm-sound">
                     <option value="bell">Bell</option>
