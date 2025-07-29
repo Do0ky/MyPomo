@@ -22,6 +22,22 @@ function updateSessionDisplay() {
     `Sessions: ${workSessions} | Short Breaks: ${shortBreaks} | Long Breaks: ${longBreaks}`;
 }
 
+/*******************************ALARM SOUND*******************************/
+// This function plays an alarm sound when the timer ends.
+// Maps the dropdown values to sound file paths
+const soundOptions = {
+    bell: "sounds/bell.mp3",
+    calm: "sounds/calm-simple-and-clean-piano-and-bass.mp3",
+    classic: "sounds/notification.mp3"
+};
+// Plays the selected alarm sound when a timer ends
+function playAlarm() {
+    const selectedSound = document.getElementById("alarm-sound").value; // Get user choice
+    const soundSrc = soundOptions[selectedSound]; // Get file path
+    const audio = new Audio(soundSrc);
+    audio.play().catch(err => console.warn("Audio play failed:", err)); // Safe play attempt
+}
+
 /*******************************COUNTDOWN*******************************/
 // This function decreases the timer every second, updating seconds and minutes accordingly. 
 // When seconds reach 0, it decreases the minutes by 1 and resets seconds to 59. 
@@ -67,6 +83,7 @@ function startTimer(){
         if (minutes === 0 && seconds === 0) {
         clearInterval(timerId);// Stop the interval loop (timer)
         isRunning = false;// Update status to show timer is no longer running
+        playAlarm(); // Play the alarm sound when the timer ends
         startPomodoro.textContent = 'Start';// Change button text back to "Start"
 
         const currentLabel = document.getElementById('session-label').textContent;
@@ -177,3 +194,5 @@ themeSelector.addEventListener("change", () => {
     //applying the selected background class
     body.classList.add(`bg-${selectedTheme}`); //changing the class in HTML, which triggers the corresponding style in CSS (linking to the right background picture)
 });
+
+
