@@ -147,7 +147,8 @@ footer p {
   margin-top: auto;
   margin-bottom: 0;
   color: #cccccc91;
-  font-size: 0.5rem;
+  font-size: 15px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 footer a {
   color: #c084fc;

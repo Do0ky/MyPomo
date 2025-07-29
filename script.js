@@ -1,6 +1,6 @@
 // Timer variables
-let minutes = 1;
-let seconds = 0;
+let minutes = 25; 
+let seconds = 0; 
 let timerId;
 let isRunning = false;
 
@@ -20,6 +20,22 @@ function displayTimer (){
 function updateSessionDisplay() {
     document.getElementById('session-info').textContent =
     `Sessions: ${workSessions} | Short Breaks: ${shortBreaks} | Long Breaks: ${longBreaks}`;
+}
+
+/*******************************ALARM SOUND*******************************/
+// This function plays an alarm sound when the timer ends.
+// Maps the dropdown values to sound file paths
+const soundOptions = {
+    bell: "sounds/bell.mp3",
+    calm: "sounds/calm-simple-and-clean-piano-and-bass.mp3",
+    classic: "sounds/notification.mp3"
+};
+// Plays the selected alarm sound when a timer ends
+function playAlarm() {
+    const selectedSound = document.getElementById("alarm-sound").value; // Get user choice
+    const soundSrc = soundOptions[selectedSound]; // Get file path
+    const audio = new Audio(soundSrc);
+    audio.play().catch(err => console.warn("Audio play failed:", err)); // Safe play attempt
 }
 
 /*******************************COUNTDOWN*******************************/
@@ -62,14 +78,33 @@ function startTimer(){
     timerId = setInterval( () => {
         decreaseTime();   // Decrease the timer by 1 second
         displayTimer();   // Update the timer display on the screen
-        // If the timer reaches 0 minutes and 0 seconds, stop the timer
+      
+            // If the timer reaches 0 minutes and 0 seconds, stop the timer
         if (minutes === 0 && seconds === 0) {
-            clearInterval(timerId); // Stop the interval loop (timer)
-            isRunning =false; // Update status to show timer is no longer running
-            startPomodoro.textContent = 'Start';// Change button text back to "Start"
+        clearInterval(timerId);// Stop the interval loop (timer)
+        isRunning = false;// Update status to show timer is no longer running
+        playAlarm(); // Play the alarm sound when the timer ends
+        startPomodoro.textContent = 'Start';// Change button text back to "Start"
+
+        const currentLabel = document.getElementById('session-label').textContent;
+
+        if (currentLabel === 'Break') {
+            // If we were on a break, switch to Pomodoro mode
+            updateSessionLabel('Pomodoro');
+            minutes = 25;
+            seconds = 0;
+            displayTimer();
+        } else {
+            // If we were on a Pomodoro session, increment counter
             workSessions++;
-            updateSessionDisplay();
         }
+
+        updateSessionDisplay();
+
+        // Re-enable break buttons
+        shortPomodoroBreak.disabled = false;
+        longPomodoroBreak.disabled = false;
+    }
     }, 1000); // This function runs once per second    
 }
 
@@ -112,7 +147,7 @@ function startBreak(breakMinutes, breakButton){
     updateSessionLabel('Break'); //call session label function, updating text of label to Break
     displayTimer(); //shows breakMinutes set timer
     // Count the right type of break
-    if (breakMinutes === 1) shortBreaks++;
+    if (breakMinutes === 5) shortBreaks++;
     else if (breakMinutes === 15) longBreaks++;
     updateSessionDisplay();
 
@@ -121,7 +156,7 @@ function startBreak(breakMinutes, breakButton){
 /***************************5-MINUTES BREAK***************************/
 const shortPomodoroBreak = document.getElementById('short-break');
 shortPomodoroBreak.addEventListener('click', () => {
-    startBreak(1, shortPomodoroBreak); // 5 minutes for short break    
+    startBreak(5, shortPomodoroBreak); // 5 minutes for short break    
 });
 
 /**************************15-MINUTES BREAK**************************/
@@ -159,3 +194,5 @@ themeSelector.addEventListener("change", () => {
     //applying the selected background class
     body.classList.add(`bg-${selectedTheme}`); //changing the class in HTML, which triggers the corresponding style in CSS (linking to the right background picture)
 });
+
+
