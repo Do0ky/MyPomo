@@ -39,30 +39,43 @@
 
     </main>
     <footer>
-        <!-- Settings button -->
-        <button id="toggle-theme" aria-label="Choose ambiance">⚙️</button>
- 
-        <div id="bg-selector" style="display: none;"> <!--Maybe we should modify the ID to settings or something similar-->
+        <!-- Footer Settings -->
+        <div class="custom-dropdown">
+
+            <!-- Settings button -->
+            <button id="toggle-theme" aria-label="Choose ambiance">⚙️</button> <!--Maybe we should modify the ID to settings or something similar-->
             <!-- Background selector -->
-            <label for="bg-theme">Customize Your Pomo</label>
-            <select id="bg-theme">
-            <optgroup label="Dark Mode">
-                <option value="scifi">Sci-Fi</option>
-                <option value="hp-night">Magical</option>
-            </optgroup>
-            <optgroup label="Light Mode">
-                <option value="lotr-light">Fantasy</option>
-                <option value="hg-light">Dystopia</option>
-            </optgroup>
-            </select>
-            
+            <ul class="bg-options">
+                <li class="option-group">Dark Mode</li>
+                    <li data-value="scifi">
+                        <img src="images/scifi.png" alt="Sci-Fi" />
+                        <span>Sci-Fi</span>
+                    </li>
+                    <li data-value="hp-night">
+                        <img src="images/hp-dark.png" alt="Magic" />
+                        <span>Magic</span>
+                    </li>
+                <li class="option-group">Light Mode</li>
+                    <li data-value="lotr-light">
+                        <img src="images/lotr-light.png" alt="Fantasy" />
+                        <span>Fantasy</span>
+                    </li>
+                    <li data-value="hg-light">
+                        <img src="images/hg-light.png" alt="Dystopia" />
+                        <span>Dystopia</span>
+                    </li>
+            </ul>
+
             <!-- Alarm sound selector -->
-             <label for="alarm-sound" style="margin-top: 10px; display: block;">Alarm Sound:</label>
+            <div class="selector-group">
+                <label for="alarm-sound">Alarm Sound:</label>
                 <select id="alarm-sound">
                     <option value="bell">Bell</option>
                     <option value="calm">Calm</option>
                     <option value="classic">Classic</option>
                 </select>
+            </div>
+
         </div>
 
         <!-- Footer Credits -->
