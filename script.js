@@ -178,21 +178,20 @@ function updateSessionLabel(mode) {
 
 /************************DROPDOWN TOGGLE THEME************************/
 document.getElementById("toggle-theme").addEventListener("click", () => {
-    const dropdown = document.getElementById("bg-selector"); //fetching background selector div
-    dropdown.style.display = (dropdown.style.display === "none") ? "block" : "none"; //ternary operator => if not visible, then display in block
+  const options = document.querySelector(".bg-options");                //fetching background selector ul
+  options.style.display = (options.style.display === "none") ? "block" : "none"; //ternary operator => if not visible, then display in block
 });
 /**********************BACKGROUND THEME SELECTION**********************/
-const themeSelector = document.getElementById("bg-theme"); //fetching the dropdown for theme selection
-const body = document.body;
-//adding event listener on "change" event => it triggers when the element value (in the select tag) is changed
-themeSelector.addEventListener("change", () => {
-    const selectedTheme = themeSelector.value; //fetching the value selected in dropdown
+window.addEventListener("DOMContentLoaded", () => {applyTheme("scifi");}); //apply default theme
 
-    //removing any previously applied background class
-    body.classList.remove("bg-scifi", "bg-hp-night", "bg-lotr-day", "bg-hg-day", "bg-hp-day", "bg-starwars-sunset");
-
-    //applying the selected background class
-    body.classList.add(`bg-${selectedTheme}`); //changing the class in HTML, which triggers the corresponding style in CSS (linking to the right background picture)
+//go through the list and add an event listener on each item
+document.querySelectorAll(".bg-options li").forEach((item) => {
+    item.addEventListener("click", () => {
+        const theme = item.getAttribute("data-value");
+        applyTheme(theme); //call the next function
+    });
 });
-
-
+function applyTheme(theme) {
+    document.body.classList.remove("bg-scifi", "bg-hp-night", "bg-lotr-light", "bg-hg-light"); //Remove any previous theme classes
+    document.body.classList.add(`bg-${theme}`); //Add the selected theme class
+}
