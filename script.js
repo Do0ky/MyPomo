@@ -23,20 +23,63 @@ function updateSessionDisplay() {
 }
 
 /*******************************ALARM SOUND*******************************/
-// This function plays an alarm sound when the timer ends.
+// This plays an alarm sound when the timer ends.
 // Maps the dropdown values to sound file paths
+// Get DOM elements
+const alarmToggle = document.getElementById("alarm-toggle");
+const alarmOptions = document.getElementById("alarm-options");
+
+// Define the available sounds
 const soundOptions = {
-    bell: "sounds/bell.mp3",
-    calm: "sounds/calm-simple-and-clean-piano-and-bass.mp3",
-    classic: "sounds/notification.mp3"
+  bell: "sounds/bell.mp3",
+  calm: "sounds/calm-simple-and-clean-piano-and-bass.mp3",
+  classic: "sounds/notification.mp3"
 };
-// Plays the selected alarm sound when a timer ends
-function playAlarm() {
-    const selectedSound = document.getElementById("alarm-sound").value; // Get user choice
-    const soundSrc = soundOptions[selectedSound]; // Get file path
-    const audio = new Audio(soundSrc);
-    audio.play().catch(err => console.warn("Audio play failed:", err)); // Safe play attempt
-}
+
+let currentAudio = null; // Holds the current audio object for control
+
+// Toggle dropdown menu visibility when bell icon is clicked
+alarmToggle.addEventListener("click", (e) => {
+  e.stopPropagation(); // Prevent this click from triggering the document click listener
+  const isVisible = alarmOptions.style.display === "block";
+  alarmOptions.style.display = isVisible ? "none" : "block";
+});
+
+// Hide dropdown menu if the user clicks anywhere outside of it
+document.addEventListener("click", (e) => {
+  const isClickInsideToggle = alarmToggle.contains(e.target);
+  const isClickInsideMenu = alarmOptions.contains(e.target);
+
+  if (!isClickInsideToggle && !isClickInsideMenu) {
+    alarmOptions.style.display = "none";
+  }
+});
+
+// Handle sound selection and playback
+alarmOptions.addEventListener("click", (e) => {
+  if (e.target.tagName === "LI") {
+    const selectedSound = e.target.getAttribute("data-sound");
+    const soundSrc = soundOptions[selectedSound];
+
+    if (!soundSrc) {
+      console.warn("No sound source found for:", selectedSound);
+      return;
+    }
+
+    // Stop any currently playing audio
+    if (currentAudio && !currentAudio.paused) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+    }
+
+    // Play the newly selected sound
+    currentAudio = new Audio(soundSrc);
+    currentAudio.play().catch(err => console.warn("Audio play failed:", err));
+
+    // Optionally hide dropdown after selection
+    alarmOptions.style.display = "none";
+  }
+});
 
 /*******************************COUNTDOWN*******************************/
 // This function decreases the timer every second, updating seconds and minutes accordingly. 
@@ -195,3 +238,16 @@ function applyTheme(theme) {
     document.body.classList.remove("bg-scifi", "bg-hp-night", "bg-lotr-light", "bg-hg-light"); //Remove any previous theme classes
     document.body.classList.add(`bg-${theme}`); //Add the selected theme class
 }
+// function to hide the dorpdown when background is selected
+document.addEventListener("click", (e) => {
+  const toggleButton = document.getElementById("toggle-theme");
+  const dropdownMenu = document.querySelector(".bg-options");
+
+  const clickedInsideToggle = toggleButton.contains(e.target);
+  const clickedInsideMenu = dropdownMenu.contains(e.target);
+
+  if (!clickedInsideToggle && !clickedInsideMenu) {
+    dropdownMenu.style.display = "none";
+  }
+});
+

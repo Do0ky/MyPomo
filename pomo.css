@@ -247,3 +247,70 @@ footer a:hover {
   background-position: center;
   background-repeat: no-repeat;
 }
+#alarm-toggle {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: white;
+  padding: 0.5rem;
+}
+
+#alarm-toggle:hover {
+  color: #ffd700; /* Highlight on hover */
+  transform: scale(1.1);
+  transition: all 0.2s ease-in-out;
+}
+
+#alarm-options {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 10px); /* below the icon */
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  padding: 0.5rem;
+  z-index: 10;
+  width: 200px; /* or adjust as needed */
+  color: white;
+}
+
+#alarm-options ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#alarm-options li {
+  padding: 8px;
+  cursor: pointer;
+  text-align: center;
+}
+
+#alarm-options li:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.tooltip {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  color: #fff;
+  display: none;
+  z-index: 5;
+}
+
+#alarm-toggle:hover .tooltip {
+  display: block;
+}
+
