@@ -1,35 +1,53 @@
-// Timer variables
-let minutes = 25; 
-let seconds = 0; 
+/********TIMER VARIABLES********/
+let minutes = 25;
+let seconds = 0;
 let timerId;
 let isRunning = false;
 
-// Session counters
-let workSessions = 0;       // Tracks number of Pomodoro work sessions
-let shortBreaks = 0;        // Tracks short breaks taken
-let longBreaks = 0;         // Tracks long breaks taken
+/********SESSION COUNTER********/
+let workSessions = 0;
+let shortBreaks = 0;
+let longBreaks = 0;
+
+/********DOM COMPONENTS********/
+// Timer & Session Display
+const timeDisplay = document.querySelector("#time");
+const sessionLabel = document.getElementById("session-label");
+const sessionInfo = document.getElementById("session-info");
+
+// Control Buttons
+const startPomodoro = document.getElementById("start");
+const resetPomodoro = document.getElementById("reset");
+const shortPomodoroBreak = document.getElementById("short-break");
+const longPomodoroBreak = document.getElementById("long-break");
+
+// Alarm Dropdown
+const alarmToggle = document.getElementById("alarm-toggle");
+const alarmOptions = document.getElementById("alarm-options");
+
+// Theme Dropdown
+const themeToggle = document.getElementById("toggle-theme");
+const themeOptions = document.querySelector(".bg-options");
+const themeItems = document.querySelectorAll(".bg-options li");
+
 
 /******************************TIMER DISPLAY******************************/
-function displayTimer (){
-    // (seconds < 10 ? '0' : '') + seconds => if the second goes down 10 like 7 this is gone add 0 infront resulting 07
-    document.querySelector("#time").textContent = `${(minutes < 10 ? '0' : '') + minutes} : ${(seconds < 10 ? '0' : '') + seconds}`;
+function displayTimer() {
+  timeDisplay.textContent = `${(minutes < 10 ? '0' : '') + minutes} : ${(seconds < 10 ? '0' : '') + seconds}`;
+  // ternary operator: if the minutes or seconds are < 10, adds 0 in front of it. e.g.: 7 => displays 07
 }
 
 /*******************************SESSION DISPLAY*******************************/
 // Updates the on-screen counter showing sessions and breaks taken
 function updateSessionDisplay() {
-    document.getElementById('session-info').textContent =
-    `Sessions: ${workSessions} | Short Breaks: ${shortBreaks} | Long Breaks: ${longBreaks}`;
+  sessionInfo.textContent = `Sessions: ${workSessions} | Short Breaks: ${shortBreaks} | Long Breaks: ${longBreaks}`;
 }
 
-/*******************************ALARM SOUND*******************************/
-// This plays an alarm sound when the timer ends.
+/************************************ALARM************************************/
+                          // ALARM DROPDOWN TOGGLE
+// This plays an alarm sound when the timer ends
 // Maps the dropdown values to sound file paths
-// Get DOM elements
-const alarmToggle = document.getElementById("alarm-toggle");
-const alarmOptions = document.getElementById("alarm-options");
-
-// Define the available sounds
+// Available sounds
 const soundOptions = {
   bell: "sounds/bell.mp3",
   calm: "sounds/calm-simple-and-clean-piano-and-bass.mp3",
@@ -44,210 +62,173 @@ alarmToggle.addEventListener("click", (e) => {
   const isVisible = alarmOptions.style.display === "block";
   alarmOptions.style.display = isVisible ? "none" : "block";
 });
-
 // Hide dropdown menu if the user clicks anywhere outside of it
 document.addEventListener("click", (e) => {
   const isClickInsideToggle = alarmToggle.contains(e.target);
   const isClickInsideMenu = alarmOptions.contains(e.target);
-
-  if (!isClickInsideToggle && !isClickInsideMenu) {
-    alarmOptions.style.display = "none";
-  }
+  if (!isClickInsideToggle && !isClickInsideMenu) {alarmOptions.style.display = "none";}
 });
 
-// Handle sound selection and playback
+                          // ALARM SOUND SELECTION
+// Sound selection and playback
 alarmOptions.addEventListener("click", (e) => {
   if (e.target.tagName === "LI") {
-    const selectedSound = e.target.getAttribute("data-sound");
-    const soundSrc = soundOptions[selectedSound];
-
+      const selectedSound = e.target.getAttribute("data-sound");
+      const soundSrc = soundOptions[selectedSound];
     if (!soundSrc) {
-      console.warn("No sound source found for:", selectedSound);
-      return;
-    }
-
+        console.warn("No sound source found for:", selectedSound);
+        return;}
     // Stop any currently playing audio
     if (currentAudio && !currentAudio.paused) {
-      currentAudio.pause();
-      currentAudio.currentTime = 0;
-    }
-
+        currentAudio.pause();
+        currentAudio.currentTime = 0;}
     // Play the newly selected sound
     currentAudio = new Audio(soundSrc);
     currentAudio.play().catch(err => console.warn("Audio play failed:", err));
-
     // Optionally hide dropdown after selection
     alarmOptions.style.display = "none";
   }
 });
 
 /*******************************COUNTDOWN*******************************/
-// This function decreases the timer every second, updating seconds and minutes accordingly. 
-// When seconds reach 0, it decreases the minutes by 1 and resets seconds to 59. 
-// It continues until both minutes and seconds reach 0.
-function decreaseTime(){
-    if (seconds === 0) {
-        if (minutes === 0) {
-            clearInterval(timerId);            
-            return;
-        }
-        minutes--;
-        seconds = 59;
-    } else {
-        seconds--;
-        console.log(seconds);
-    }
-}
+// This function decreases the timer every second, updating seconds and minutes accordingly
+function decreaseTime() {
+  // When seconds reach 0, decreases minutes by 1 and resets seconds to 59
+  if (seconds === 0) {
+    if (minutes === 0) {clearInterval(timerId);
+      return;}
+    minutes--;
+    seconds = 59;}
+    else {seconds--;}
+} // Continues until both minutes and seconds reach 0
 
-/************Toggle between START and PAUSE on the same button************/
-const startPomodoro = document.getElementById('start');
+/**************************START / PAUSE TOGGLE**************************/
 startPomodoro.addEventListener('click', () => {
-    if(!isRunning){
-         isRunning = true;
-         startPomodoro.textContent= 'Pause';
-         console.log(`before start`);
-         startTimer();         
-    }else {
-        isRunning = false;
-        startPomodoro.textContent= 'Start';
-        pauseTimer();
-    }
+  if (!isRunning) {
+    isRunning = true;
+    startPomodoro.textContent = 'Pause';
+    startTimer();}
+  else {
+    isRunning = false;
+    startPomodoro.textContent = 'Start';
+    pauseTimer();}
 });
 
-/*******************************START*******************************/
-function startTimer(){
-    clearInterval(timerId); // Always clear first to avoid double intervals
-    // Start the timer and run this function every 1000 milliseconds (1 second) 
-    timerId = setInterval( () => {
-        decreaseTime();   // Decrease the timer by 1 second
-        displayTimer();   // Update the timer display on the screen
-      
-            // If the timer reaches 0 minutes and 0 seconds, stop the timer
-        if (minutes === 0 && seconds === 0) {
-        clearInterval(timerId);// Stop the interval loop (timer)
-        isRunning = false;// Update status to show timer is no longer running
-        playAlarm(); // Play the alarm sound when the timer ends
-        startPomodoro.textContent = 'Start';// Change button text back to "Start"
+/******************************START TIMER******************************/
+function startTimer() {
+  clearInterval(timerId);  // Always clear first to avoid double intervals
 
-        const currentLabel = document.getElementById('session-label').textContent;
+  timerId = setInterval(() => {
+    decreaseTime(); // Decrease the timer by 1 second
+    displayTimer(); // Update the timer display on the screen
+    // If the timer reaches 0 minutes and 0 seconds, stop the timer
+    if (minutes === 0 && seconds === 0) {
+      clearInterval(timerId); // Stop the interval loop (timer)
+      isRunning = false; // Update status to show timer is no longer running
+      playAlarm(); // Play the alarm sound when the timer ends
+      startPomodoro.textContent = 'Start'; // Change button text back to "Start"
 
-        if (currentLabel === 'Break') {
-            // If we were on a break, switch to Pomodoro mode
-            updateSessionLabel('Pomodoro');
-            minutes = 25;
-            seconds = 0;
-            displayTimer();
-        } else {
-            // If we were on a Pomodoro session, increment counter
-            workSessions++;
-        }
+      const currentLabel = sessionLabel.textContent;
 
-        updateSessionDisplay();
+      if (currentLabel === 'Break') {
+        // If we were on a break, switch to Pomodoro mode
+        updateSessionLabel('Work');
+        minutes = 25;
+        seconds = 0;
+        displayTimer();}
+      else {workSessions++;} // If we were on a Pomodoro session, increment counter
 
-        // Re-enable break buttons
-        shortPomodoroBreak.disabled = false;
-        longPomodoroBreak.disabled = false;
+      updateSessionDisplay();
+      // Re-enable break buttons
+      shortPomodoroBreak.disabled = false;
+      longPomodoroBreak.disabled = false;
     }
-    }, 1000); // This function runs once per second    
+  }, 1000); // Start the timer and run this function every 1000 milliseconds (1 second) 
 }
 
-/*******************************PAUSE*******************************/
-// Function to pause the timer
-function pauseTimer(){  
-        clearInterval(timerId); // Stop the interval loop (pause the timer)      
-    }
+/******************************PAUSE TIMER******************************/
+function pauseTimer() {
+  clearInterval(timerId);
+}
 
-/*******************************RESET*******************************/
-//Claire: I actually think it's fine to always reset back to 25 (and not 5 or 15 during breaks)? Like it makes more sense?
-const resetPomodoro = document.getElementById('reset');
-resetPomodoro.addEventListener('click', () => {    
-        startPomodoro.textContent = 'Start';// Change button text back to "Start"        
-        clearInterval(timerId); //stops the timer loop
-        isRunning = false; //this is optional, just security
-        minutes = 25; //resets minutes
-        seconds = 0; //resets seconds
-        displayTimer(); //refreshes the display
-        updateSessionLabel('Pomodoro'); //call session label function, updating text of label to Pomodoro
-        // Re-enable break buttons after reset
-        shortPomodoroBreak.disabled = false;
-        longPomodoroBreak.disabled = false;       
-        // Reset session counters
-	        workSessions = 0;
-	        shortBreaks = 0;
-	        longBreaks = 0;
-	        updateSessionDisplay();
-  
+/******************************RESET TIMER******************************/
+resetPomodoro.addEventListener('click', () => {
+  startPomodoro.textContent = 'Start'; // Change button text back to "Start" 
+  clearInterval(timerId); // Stop the timer loop
+  isRunning = false; //this is optional, just security
+  minutes = 25; //reset minutes
+  seconds = 0;//reset seconds 
+  displayTimer(); //refresh the display
+  updateSessionLabel('Work'); //call session label function, updating text of label
+  shortPomodoroBreak.disabled = false; //Re-enable break buttons after reset
+  longPomodoroBreak.disabled = false;
+  workSessions = 0; //reset session counters
+  shortBreaks = 0;
+  longBreaks = 0;
+  updateSessionDisplay();
 });
 
 /*******************************BREAKS*******************************/
-function startBreak(breakMinutes, breakButton){
-    breakButton.disabled = true; //disables the short break button
-    clearInterval(timerId); //stops the timer loop if it's running
-    //once it's cleared the following happens:
-    isRunning = false; //avoids auto-start
-    minutes = breakMinutes; //update the value of the variable 
-    seconds = 0;
-    updateSessionLabel('Break'); //call session label function, updating text of label to Break
-    displayTimer(); //shows breakMinutes set timer
-    // Count the right type of break
-    if (breakMinutes === 5) shortBreaks++;
-    else if (breakMinutes === 15) longBreaks++;
-    updateSessionDisplay();
+function startBreak(breakMinutes, breakButton) {
+  breakButton.disabled = true;
+  clearInterval(timerId); //stops the timer loop if it's running
+  isRunning = false; //avoids auto-start
+  minutes = breakMinutes; //updates the value of the variable 
+  seconds = 0;
+  updateSessionLabel('Break'); //call session label function, updating text of label to Break
+  displayTimer();
 
-    startPomodoro.textContent = 'Start'; //shows start until clicked
+  if (breakMinutes === 5) shortBreaks++;
+  else if (breakMinutes === 15) longBreaks++;
+
+  updateSessionDisplay();
+  startPomodoro.textContent = 'Start'; //displays start until clicked
 }
-/***************************5-MINUTES BREAK***************************/
-const shortPomodoroBreak = document.getElementById('short-break');
-shortPomodoroBreak.addEventListener('click', () => {
-    startBreak(5, shortPomodoroBreak); // 5 minutes for short break    
+
+/****************************5-MINUTES BREAK****************************/
+shortPomodoroBreak.addEventListener("click", () => {
+  startBreak(5, shortPomodoroBreak);
 });
 
-/**************************15-MINUTES BREAK**************************/
-const longPomodoroBreak = document.getElementById('long-break');
-longPomodoroBreak.addEventListener('click', () => {
-    startBreak(15, longPomodoroBreak); // 15 minutes for long break  
+/***************************15-MINUTES BREAK***************************/
+longPomodoroBreak.addEventListener("click", () => {
+  startBreak(15, longPomodoroBreak);
 });
 
-/***************************LABEL SESSION***************************/
-//Update the text of the label depending on the session
+/*************************UPDATE SESSION LABEL*************************/
 function updateSessionLabel(mode) {
-    const label = document.getElementById('session-label');
-    label.textContent = mode; //getting the text content of the div => the 'mode' parameter is updated in the reset and break functions
-
-    //toggling the class of the div depending on the session
-    if (mode === 'Break') {label.classList.add('break');} 
-    else {label.classList.remove('break');}
+  sessionLabel.textContent = mode; //getting the text content of the div => the 'mode' parameter is updated in the reset and break functions
+  //toggling the class of the div depending on the session
+  if (mode === 'Break') {sessionLabel.classList.add('break');} 
+  else {sessionLabel.classList.remove('break');}
 }
 
-/************************DROPDOWN TOGGLE THEME************************/
-document.getElementById("toggle-theme").addEventListener("click", () => {
-  const options = document.querySelector(".bg-options");                //fetching background selector ul
-  options.style.display = (options.style.display === "none") ? "block" : "none"; //ternary operator => if not visible, then display in block
+/********************************THEME********************************/
+                          // THEME TOGGLE
+themeToggle.addEventListener("click", () => {
+  themeOptions.style.display = (themeOptions.style.display === "none") ? "block" : "none"; //ternary operator => if not visible, then display in block
 });
-/**********************BACKGROUND THEME SELECTION**********************/
+
+                          // THEME SELECTION
 window.addEventListener("DOMContentLoaded", () => {applyTheme("scifi");}); //apply default theme
-
 //go through the list and add an event listener on each item
-document.querySelectorAll(".bg-options li").forEach((item) => {
-    item.addEventListener("click", () => {
-        const theme = item.getAttribute("data-value");
-        applyTheme(theme); //call the next function
-    });
+themeItems.forEach((item) => {
+  item.addEventListener("click", () => {
+      const theme = item.getAttribute("data-value");
+      applyTheme(theme);
+  });
 });
+
 function applyTheme(theme) {
-    document.body.classList.remove("bg-scifi", "bg-hp-night", "bg-lotr-light", "bg-hg-light"); //Remove any previous theme classes
-    document.body.classList.add(`bg-${theme}`); //Add the selected theme class
+  document.body.classList.remove("bg-scifi", "bg-hp-night", "bg-lotr-light", "bg-hg-light"); //Remove any previous theme classes
+  document.body.classList.add(`bg-${theme}`); //Add the selected theme class
 }
-// function to hide the dorpdown when background is selected
+
+                  // HIDE THEME DROPDOWN ON OUTSIDE CLICK
 document.addEventListener("click", (e) => {
-  const toggleButton = document.getElementById("toggle-theme");
-  const dropdownMenu = document.querySelector(".bg-options");
-
-  const clickedInsideToggle = toggleButton.contains(e.target);
-  const clickedInsideMenu = dropdownMenu.contains(e.target);
-
+  const clickedInsideToggle = themeToggle.contains(e.target);
+  const clickedInsideMenu = themeOptions.contains(e.target);
   if (!clickedInsideToggle && !clickedInsideMenu) {
-    dropdownMenu.style.display = "none";
+    themeOptions.style.display = "none";
   }
 });
-
