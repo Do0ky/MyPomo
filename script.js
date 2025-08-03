@@ -208,50 +208,53 @@ document.addEventListener("click", (e) => {
 });
 
 
-/***********************************SETTINGS MODULE***********************************/
-/************************************ALARM************************************/
-                          // ALARM DROPDOWN TOGGLE
-// This plays an alarm sound when the timer ends
-// Maps the dropdown values to sound file paths
-// Available sounds
+/************************************ ALARM ********************************************/
+// Mapping sound keys to their audio file paths
 const soundOptions = {
   bell: "sounds/bell.mp3",
   calm: "sounds/calm-simple-and-clean-piano-and-bass.mp3",
   classic: "sounds/notification.mp3"
 };
 
-let currentAudio = null; // Holds the current audio object for control
+let currentAudio = null; // Tracks the currently playing audio
 
-// Toggle dropdown menu visibility when bell icon is clicked
+// Toggle visibility of alarm options menu
 alarmToggle.addEventListener("click", (e) => {
-  e.stopPropagation(); // Prevent this click from triggering the document click listener
-  const isVisible = alarmOptions.style.display === "block";
-  alarmOptions.style.display = isVisible ? "none" : "block";
-});
-// Hide dropdown menu if the user clicks anywhere outside of it
-document.addEventListener("click", (e) => {
-  const isClickInsideToggle = alarmToggle.contains(e.target);
-  const isClickInsideMenu = alarmOptions.contains(e.target);
-  if (!isClickInsideToggle && !isClickInsideMenu) {alarmOptions.style.display = "none";}
+  e.stopPropagation(); // Prevents closing the dropdown from this click
+  alarmOptions.style.display = (alarmOptions.style.display === "block") ? "none" : "block";
 });
 
-                          // ALARM SOUND SELECTION
-// Sound selection and playback
-alarmOptions.addEventListener("click", (e) => {
-  if (e.target.tagName === "LI") {
-      const selectedSound = e.target.getAttribute("data-sound");
-      const soundSrc = soundOptions[selectedSound];
-    if (!soundSrc) {
-        console.warn("No sound source found for:", selectedSound);
-        return;}
-    // Stop any currently playing audio
-    if (currentAudio && !currentAudio.paused) {
-        currentAudio.pause();
-        currentAudio.currentTime = 0;}
-    // Play the newly selected sound
-    currentAudio = new Audio(soundSrc);
-    currentAudio.play().catch(err => console.warn("Audio play failed:", err));
-    // Optionally hide dropdown after selection
+// Hide alarm dropdown if the user clicks outside it
+document.addEventListener("click", (e) => {
+  const clickedInsideToggle = alarmToggle.contains(e.target);
+  const clickedInsideOptions = alarmOptions.contains(e.target);
+  if (!clickedInsideToggle && !clickedInsideOptions) {
     alarmOptions.style.display = "none";
   }
+});
+
+// Handle alarm sound selection and playback
+alarmOptions.addEventListener("click", (e) => {
+  if (e.target.tagName !== "LI") return;
+
+  const selectedSound = e.target.getAttribute("data-sound");
+  const soundSrc = soundOptions[selectedSound];
+
+  if (!soundSrc) {
+    console.warn("No sound file found for:", selectedSound);
+    return;
+  }
+
+  // Stop currently playing audio, if any
+  if (currentAudio && !currentAudio.paused) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+  }
+
+  // Play selected sound
+  currentAudio = new Audio(soundSrc);
+  currentAudio.play().catch(err => console.warn("Audio play failed:", err));
+
+  // Hide the dropdown after selection
+  alarmOptions.style.display = "none";
 });
