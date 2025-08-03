@@ -1,4 +1,4 @@
-* {/*To start with everything clean*/
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -139,14 +139,6 @@ footer {
   height: 100px;
   position: relative;
 }
-#toggle-theme {
-  margin-bottom: 10px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  background: none;
-  border: none;
-  opacity: 0.6;
-}
 footer p {
   margin-top: auto;
   margin-bottom: 0;
@@ -162,10 +154,34 @@ footer a:hover {
   text-decoration: underline;
 }
 
-/* SETTINGS dropdown */
-.custom-dropdown {
-  position: relative;
+/* SETTINGS container */
+.settings-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;     
+  gap: 1rem;               
+  margin-top: 1rem;        
 }
+
+@media (max-width: 500px) {
+  .settings-container {
+    flex-direction: column;
+  }
+}
+
+.settings-button {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.settings-button:hover {
+  opacity: 1;
+}
+
 /* Box appearing when click on settings button */
 .bg-options {
   list-style: none;
@@ -251,15 +267,6 @@ footer a:hover {
   background-position: center;
   background-repeat: no-repeat;
 }
-#alarm-toggle {
-  position: relative;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1.5rem;
-  color: white;
-  padding: 0.5rem;
-}
 
 #alarm-toggle:hover {
   color: #ffd700; /* Highlight on hover */
@@ -295,8 +302,25 @@ footer a:hover {
   text-align: center;
 }
 
-#alarm-options li:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+/* Settings buttons */
+.settings-button {
+  font-size: 1.2rem;
+  padding: 0.5rem;
+  background: none;
+  border: none;
+  color: white;
+  opacity: 0.7;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings-button:hover {
+  opacity: 1;
+  transform: scale(1.1);
+  color: #ffd700; /* Optional glow color */
 }
 
 .tooltip {
@@ -314,7 +338,6 @@ footer a:hover {
   z-index: 5;
 }
 
-#alarm-toggle:hover .tooltip {
+.settings-button:hover .tooltip {
   display: block;
 }
-
