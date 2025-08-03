@@ -1,6 +1,9 @@
-* {
+*, *::before, *::after {
+  box-sizing: inherit;
   margin: 0;
   padding: 0;
+}
+html {
   box-sizing: border-box;
 }
 body {
@@ -11,7 +14,6 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-family: Arial, Helvetica, sans-serif;   
 }
 .app {
   margin: 0 auto;
@@ -29,19 +31,21 @@ main {
 
 h1 {
   color: #ffffff;
-  text-shadow: 0 0 8px #a855f7;
+  text-shadow: 0 0 8px #f7b655;
   margin-bottom: 30px;
   text-align: center;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-  font-size: 2.2rem;
+  font-family: "Island Moments", cursive;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 7rem;
   letter-spacing: 1px;
 }
+
 /* SESSION LABEL */
 #session-label {
     width: 100%;                    /* fills the width of .app */
-    margin-top: 10vh;               /* space between title and label */
-    margin-bottom: 5vh;             /* space between label and timer */
+    margin-top: 10vh;
+    margin-bottom: 5vh;
     padding: 10px 15px;
     background-color: #000000b2;
     backdrop-filter: blur(2px);
@@ -133,14 +137,14 @@ footer p {
   opacity: 0.5;
 }
 footer a {
-  color: #c084fc;
+  color: #f8bf6ace;
   text-decoration: none;
 }
 footer a:hover {
   text-decoration: underline;
 }
 
-/* SETTINGS container */
+/* SETTINGS CONTAINER */
 .settings-container {
   display: flex;
   justify-content: center;
@@ -148,25 +152,49 @@ footer a:hover {
   gap: 1rem;               
   margin-top: 1rem;        
 }
-
 @media (max-width: 500px) {
   .settings-container {
     flex-direction: column;
   }
 }
-
+/* Settings buttons */
 .settings-button {
-  font-size: 1.5rem;
+  position: relative;
+  font-size: 1.2rem;
+  padding: 0.5rem;
   background: none;
   border: none;
+  color: white;
+  opacity: 0.7;
   cursor: pointer;
-  opacity: 0.8;
-  transition: opacity 0.3s ease;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
 .settings-button:hover {
   opacity: 1;
+  transform: scale(1.1);
+  color: #f59921;
 }
+.tooltip {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  color: #fff;
+  display: none;
+  z-index: 5;
+}
+.settings-button:hover .tooltip {
+  display: block;
+}
+
 
 /* Box appearing when click on background button */
 .bg-options {
@@ -182,6 +210,7 @@ footer a:hover {
   z-index: 10;
   width: 160px;
   color: rgba(255, 255, 255, 0.726);
+  transition: opacity 0.3s ease;
 }
 /* "Titles" : Dark mode & Light mode */
 .bg-options .option-group {
@@ -229,9 +258,6 @@ footer a:hover {
   font-weight: bold;
   margin-bottom: 4px;
 }
-.select-group select {
-  width: 100%;
-}
 
 /* ALARM BOX */
 /* Box appearing when click on alarm button */
@@ -248,6 +274,7 @@ footer a:hover {
   z-index: 10;
   width: 160px;
   color: rgba(255, 255, 255, 0.726);
+  transition: opacity 0.3s ease;
 }
 #alarm-options ul {
   list-style: none;
@@ -259,45 +286,6 @@ footer a:hover {
   cursor: pointer;
   text-align: center;
 }
-
-/* Settings buttons */
-.settings-button {
-  position: relative;
-  font-size: 1.2rem;
-  padding: 0.5rem;
-  background: none;
-  border: none;
-  color: white;
-  opacity: 0.7;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.settings-button:hover {
-  opacity: 1;
-  transform: scale(1.1);
-  color: #f59921;
-}
-.tooltip {
-  position: absolute;
-  top: -30px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.7);
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  white-space: nowrap;
-  color: #fff;
-  display: none;
-  z-index: 5;
-}
-.settings-button:hover .tooltip {
-  display: block;
-}
-
 
 /* BACKGROUND CLASSES TO TOGGLE THEME*/
 /*Dark*/
