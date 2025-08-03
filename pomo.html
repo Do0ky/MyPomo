@@ -16,8 +16,8 @@
             <h1>My Pomo</h1>
         </header>
 
-        <!-- Label: Pomodoro or Break -->
-        <div id="session-label">Pomodoro</div>
+        <!-- Label: Work or Break -->
+        <div id="session-label">Work</div>
 
         <!-- Timer Display -->
         <section class="main-timer">
@@ -39,12 +39,13 @@
         </section>       
 
     </main>
+    
     <footer>
         <!-- Footer Settings -->
         <div class="custom-dropdown">
 
             <!-- Settings button -->
-            <button id="toggle-theme" aria-label="Choose ambiance">⚙️</button> <!--Maybe we should modify the ID to settings or something similar-->
+            <button id="toggle-theme" aria-label="Choose ambiance">⚙️</button>
             <!-- Background selector -->
             <ul class="bg-options">
                 <li class="option-group">Dark Mode</li>
@@ -68,19 +69,19 @@
             </ul>
 
             <!-- Alarm sound selector -->
-           <button id="alarm-toggle" aria-label="Alarm Sound">
-  <i class="fas fa-bell"></i>
-  <span class="tooltip">Choose Sound</span>
-</button>
+            <button id="alarm-toggle" aria-label="Alarm Sound">
+                <i class="fas fa-bell"></i>
+                <span class="tooltip">Choose Sound</span>
+            </button>
+        </div>
 
-<div id="alarm-options" class="dropdown-menu">
-  <ul>
-    <li data-sound="bell">🔔 Bell</li>
-    <li data-sound="calm">🌊 Calm</li>
-    <li data-sound="classic">🎵 Classic</li>
-  </ul>
-</div>
-
+        <div id="alarm-options" class="dropdown-menu">
+            <ul>
+                <li data-sound="bell">🔔 Bell</li>
+                <li data-sound="calm">🌊 Calm</li>
+                <li data-sound="classic">🎵 Classic</li>
+            </ul>
+        </div>
 
         <!-- Footer Credits -->
         <p>
