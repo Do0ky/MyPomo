@@ -8,7 +8,7 @@ html {
 }
 body {
   font-family: 'Poppins', Arial, Helvetica, sans-serif;  
-  background-image: url("./images/scifi.png");
+  background-image: url("./images/scifi.png"); /*fallback in case of slow JS*/
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -28,7 +28,7 @@ body {
 main {
   flex: 1; /*helps pushing footer down*/
 }
-
+/* MAIN TITLE */
 h1 {
   color: #ffffff;
   text-shadow: 0 0 8px #f7b655;
@@ -78,6 +78,7 @@ h1 {
     box-shadow: 0 12px 24px black;
     background-color: rgba(255, 255, 255, 0.445);
 }
+
 /* CONTROLS */
 .controls button {
   padding: 12px 24px;
@@ -98,6 +99,7 @@ h1 {
   background-color: rgba(255, 255, 255, 0.15);
   box-shadow: 0 0 8px #c084fc;
 }
+
 /* SESSION COUNTER */
 #session-counter {
     width: fit-content;   
@@ -118,6 +120,7 @@ h1 {
 #session-info {
     margin: 0;
 }
+
 /* FOOTER */
 footer {
   text-align: center;
@@ -195,7 +198,7 @@ footer a:hover {
   display: block;
 }
 
-
+/* BACKGROUND BOX */
 /* Box appearing when click on background button */
 .bg-options {
   display: none;
